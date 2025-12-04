@@ -197,6 +197,10 @@
         align-items: center;
     }
 
+    #title {
+        font-weight: 590;
+    }
+
     #no-errs {
         margin-top: 50px;
         font-weight: 500;

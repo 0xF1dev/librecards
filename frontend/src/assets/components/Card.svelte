@@ -142,10 +142,18 @@
 
     async function onWrong() {
         console.log("saving err");
-        let err = await SaveError(id, realValues[section].section, realValues[section].questions[question]);
-        if (err === 1) {
-            console.log("error!");
-            return;
+        if (withCorrection == true) {
+            let err = await SaveError(id, realValues[section].section, realValues[section].questions[question]);
+            if (err === 1) {
+                console.log("error!");
+                return;
+            }
+        } else {
+            let err = await SaveError(id, section, question);
+            if (err === 1) {
+                console.log("error!");
+                return;
+            }
         }
 
         correct = false;
