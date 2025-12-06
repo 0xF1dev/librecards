@@ -8,6 +8,14 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+type Dialog struct {
+	Title   string   `json:"title"`
+	Content string   `json:"content"`
+	Buttons []string `json:"buttons"`
+	Default string   `json:"default"`
+	Cancel  string   `json:"cancel"`
+}
+
 type App struct {
 	ctx context.Context
 }
@@ -53,20 +61,20 @@ func (a *App) GetErrors(id string) backend.CardErrors {
 	return backend.GetErrors(id)
 }
 
-func (a *App) DeleteCard(id string) int {
+func (a *App) DeleteCard(id string, dialog Dialog) int {
 	choice, err := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 		Type:          runtime.QuestionDialog,
-		Title:         "Confirm",
-		Message:       "Are you sure you want to delete this flashcard?",
-		Buttons:       []string{"Yes", "No"},
-		DefaultButton: "No",
-		CancelButton:  "No",
+		Title:         dialog.Title,
+		Message:       dialog.Content,
+		Buttons:       dialog.Buttons,
+		DefaultButton: dialog.Default,
+		CancelButton:  dialog.Cancel,
 	})
 	if err != nil {
 		log.Printf("[!] Error while showing dialog: %s\n", err.Error())
 		return 1
 	}
-	if choice == "Yes" {
+	if choice == dialog.Buttons[0] {
 		return backend.DeleteCard(id)
 	} else {
 		return 1

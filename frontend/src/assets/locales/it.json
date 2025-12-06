@@ -29,5 +29,15 @@
         "question": "Domanda",
         "answer": "Risposta",
         "new_section": "Nuova sezione"
+    },
+
+    "dialogs": {
+        "delete": {
+            "title": "Conferma",
+            "content": "Cancellare flashcard?",
+            "buttons": ["Sì", "No"],
+            "default": "No",
+            "cancel": "No"
+        }
     }
 }

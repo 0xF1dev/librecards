@@ -64,7 +64,16 @@
     }
 
     async function deleteCard(id) {
-        let err = await DeleteCard(id);
+        let err = await DeleteCard(id, {
+            title: $_("dialogs.delete.title"),
+            content: $_("dialogs.delete.content"),
+            buttons: [
+                $_("dialogs.delete.button_yes"),
+                $_("dialogs.delete.button_no"),
+            ],
+            default: $_("dialogs.delete.default"),
+            cancel: $_("dialogs.delete.cancel"),
+        });
         if (err === 0) {
             onDelete();
         }
@@ -77,7 +86,9 @@
 
 <div class="wrapper">
     <div class="main">
-        <p class="text">{$_('home.your_flashcards', { values: { count: count } })}</p>
+        <p class="text">
+            {$_("home.your_flashcards", { values: { count: count } })}
+        </p>
         <div class="card-wrapper">
             {#if cards.length > 1}
                 <button class="scroll" onclick={scrollLeft}
@@ -124,7 +135,7 @@
                 </div>
             {/if}
             {#if cards.length === 0}
-                <p style="margin-bottom: 40px;">{$_('home.no_cards')}</p>
+                <p style="margin-bottom: 40px;">{$_("home.no_cards")}</p>
             {/if}
             {#if cards.length > 1}
                 <button class="scroll" onclick={scrollRight}
@@ -148,7 +159,7 @@
                 </button>
             </div>
         {/if}
-        <button class="new" onclick={newFunc}>{$_('home.new_card')}</button>
+        <button class="new" onclick={newFunc}>{$_("home.new_card")}</button>
     </div>
 </div>
 

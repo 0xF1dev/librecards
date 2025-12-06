@@ -229,3 +229,28 @@ export namespace backend {
 
 }
 
+export namespace main {
+	
+	export class Dialog {
+	    title: string;
+	    content: string;
+	    buttons: string[];
+	    default: string;
+	    cancel: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Dialog(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.title = source["title"];
+	        this.content = source["content"];
+	        this.buttons = source["buttons"];
+	        this.default = source["default"];
+	        this.cancel = source["cancel"];
+	    }
+	}
+
+}
+
