@@ -14,6 +14,8 @@
     // @ts-ignore
     import Edit from "../images/edit.png";
 
+    import { _ } from "svelte-i18n";
+
     let { onNew, onSelect, onDelete, onEdit } = $props();
 
     let cards = $state([]);
@@ -75,7 +77,7 @@
 
 <div class="wrapper">
     <div class="main">
-        <p class="text">Your Flashcards ({count})</p>
+        <p class="text">{$_('home.your_flashcards', { values: { count: count } })}</p>
         <div class="card-wrapper">
             {#if cards.length > 1}
                 <button class="scroll" onclick={scrollLeft}
@@ -122,7 +124,7 @@
                 </div>
             {/if}
             {#if cards.length === 0}
-                <p style="margin-bottom: 40px;">No cards</p>
+                <p style="margin-bottom: 40px;">{$_('home.no_cards')}</p>
             {/if}
             {#if cards.length > 1}
                 <button class="scroll" onclick={scrollRight}
@@ -146,7 +148,7 @@
                 </button>
             </div>
         {/if}
-        <button class="new" onclick={newFunc}>New Flashcard</button>
+        <button class="new" onclick={newFunc}>{$_('home.new_card')}</button>
     </div>
 </div>
 

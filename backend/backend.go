@@ -55,20 +55,30 @@ type SectionErrors struct {
 	Questions []int `json:"questions"`
 }
 
+type Settings struct {
+	Language string `json:"language"`
+}
+
+var DataPath = xdg.DataHome + "/librecards"
+
+var IndexPath = xdg.DataHome + "/librecards/index.json"
+var ErrorsPath = xdg.DataHome + "/librecards/errors.json"
+var SettingsPath = xdg.DataHome + "/librecards/settings.json"
+
 func StartupChecks() error {
 	log.Println("------- Starting checks... -------")
 
-	if _, err := os.Stat(xdg.DataHome + "/librecards"); os.IsNotExist(err) {
+	if _, err := os.Stat(DataPath); os.IsNotExist(err) {
 		log.Println("Librecards data directory doesn't exist. Creating...")
-		err := os.Mkdir(xdg.DataHome+"/librecards", 0777)
+		err := os.Mkdir(DataPath, 0777)
 		if err != nil {
 			return err
 		}
 	}
 
-	if _, err := os.Stat(xdg.DataHome + "/librecards/index.json"); os.IsNotExist(err) {
+	if _, err := os.Stat(IndexPath); os.IsNotExist(err) {
 		log.Println("Librecards index file doesn't exist. Creating...")
-		f, err := os.Create(xdg.DataHome + "/librecards/index.json")
+		f, err := os.Create(IndexPath)
 		if err != nil {
 			return err
 		}
@@ -77,9 +87,9 @@ func StartupChecks() error {
 		f.Write([]byte(`{"count":0,"cards":[]}`))
 	}
 
-	if _, err := os.Stat(xdg.DataHome + "/librecards/errors.json"); os.IsNotExist(err) {
+	if _, err := os.Stat(ErrorsPath); os.IsNotExist(err) {
 		log.Println("Librecards errors file doesn't exist. Creating...")
-		f, err := os.Create(xdg.DataHome + "/librecards/errors.json")
+		f, err := os.Create(ErrorsPath)
 		if err != nil {
 			return err
 		}
@@ -88,19 +98,67 @@ func StartupChecks() error {
 		f.Write([]byte(`[]`))
 	}
 
+	if _, err := os.Stat(SettingsPath); os.IsNotExist(err) {
+		log.Println("Librecards settings file doesn't exist. Creating...")
+		f, err := os.Create(SettingsPath)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		f.Write([]byte(`{"language":"en"}`))
+	}
+
 	log.Println("------- Checks finished! -------")
 
 	return nil
 }
 
-var DataPath = xdg.DataHome + "/librecards/"
-
-var IndexPath = xdg.DataHome + "/librecards/index.json"
-var ErrorsPath = xdg.DataHome + "/librecards/errors.json"
-
 var ErrorCardEntry = CardEntry{ID: "0", Title: "Error", Subject: "Try again"}
 var ErrorCard = Card{ID: "0", Data: CardData{Sections: []Section{{Questions: []Question{{Question: "Error", Answer: "Try again"}}}}}}
 var ErrorCardErrors = CardErrors{ID: "0", Title: "Error", Errors: []SectionErrors{{Section: 0, Questions: []int{0}}}}
+
+var DefaultSettings = Settings{Language: "en"}
+
+func ReadSettings() Settings {
+	log.Println("--- Reading settings... ---")
+
+	f, err := os.ReadFile(SettingsPath)
+	if err != nil {
+		log.Printf("[!] Error while reading settings file: %s\n", err.Error())
+	}
+
+	var settings Settings
+	err = json.Unmarshal(f, &settings)
+	if err != nil {
+		log.Printf("[!] Unable to unmarshal settings file: %s\n", err.Error())
+	}
+
+	log.Printf("Settings: %+v\n", settings)
+
+	log.Printf("--- Settings read! ---")
+
+	return settings
+}
+
+func SaveSettings(settings Settings) int {
+	log.Println("--- Saving settings... ---")
+
+	data, err := json.Marshal(settings)
+	if err != nil {
+		log.Printf("[!] Unable to marshal new settings: %s\n", err.Error())
+		return 1
+	}
+
+	if err := os.WriteFile(SettingsPath, data, 0777); err != nil {
+		log.Printf("[!] Unable to write new settings: %s\n", err.Error())
+		return 1
+	}
+
+	log.Printf("--- Settings saved! ---")
+
+	return 0
+}
 
 func ReadIndex() Index {
 	log.Println("--- Reading index... ---")
@@ -117,6 +175,8 @@ func ReadIndex() Index {
 		log.Printf("[!] Error while unmarshalling index: %s\n", err.Error())
 		return Index{Count: 0, Cards: []CardEntry{ErrorCardEntry}}
 	}
+
+	slices.Reverse(index.Cards)
 
 	log.Printf("Total entries: %d", index.Count)
 
@@ -157,7 +217,7 @@ func CreateNewCard(card CardData) int {
 	index := ReadIndex()
 
 	id := GenerateNewID()
-	path := DataPath + id + ".json"
+	path := DataPath + "/" + id + ".json"
 
 	index.Cards = append(index.Cards, CardEntry{ID: id, Title: card.Title, Subject: card.Subject, Path: path})
 	index.Count += 1

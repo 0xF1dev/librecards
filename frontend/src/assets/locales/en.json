@@ -1,0 +1,33 @@
+{
+    "loading": "Loading...",
+
+    "language": "Language:",
+
+    "home": {
+        "your_flashcards": "Your Flashcards ({count})",
+        "no_cards": "No cards",
+        "new_card": "New Flashcard"
+    },
+
+    "card": {
+        "show_answer": "Show answer",
+        "hide_answer": "Hide answer",
+        "wrong": "Wrong",
+        "correct": "Correct",
+        "error": "Error while loading flashcard!"
+    },
+
+    "end": {
+        "no_errs": "No errors!",
+        "start_correction": "Start correction"
+    },
+
+    "new": {
+        "title": "Title",
+        "subject": "Subject",
+        "section_title": "Section title ({n})",
+        "question": "Question",
+        "answer": "Answer",
+        "new_section": "New section"
+    }
+}

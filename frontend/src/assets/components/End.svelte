@@ -11,6 +11,8 @@
     import { fly } from "svelte/transition";
     import SvelteMarkdown from "@humanspeak/svelte-markdown";
 
+    import { _ } from "svelte-i18n";
+
     let { id, onStart } = $props();
 
     let errors;
@@ -29,6 +31,8 @@
     let hasErrors = $state(false);
 
     onMount(async () => {
+        title = (await GetCard(id)).data.title
+
         errors = await GetErrors(id);
         console.log(errors);
 
@@ -114,11 +118,11 @@
 </script>
 
 <div class="wrapper">
+    <h1 bind:innerText={title} contenteditable="false" id="title">
+        Loading...
+    </h1>
     {#if hasErrors}
-        <h1 bind:innerText={title} contenteditable="false" id="title">
-            Loading...
-        </h1>
-        <button id="correct" onclick={start}>Start correction</button>
+        <button id="correct" onclick={start}>{$_('end.start_correction')}</button>
         <div id="preview-wrapper">
             <div class="section-title" style="display: grid;">
                 {#key sectionTitle}
@@ -158,7 +162,7 @@
             </div>
         </div>
     {:else}
-        <h1 id="no-errs">No errors!</h1>
+        <h1 id="no-errs">{$_('end.no_errs')}</h1>
     {/if}
 </div>
 

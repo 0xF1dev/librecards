@@ -22,12 +22,20 @@ export function NewCard(arg1) {
   return window['go']['main']['App']['NewCard'](arg1);
 }
 
+export function ReadSettings() {
+  return window['go']['main']['App']['ReadSettings']();
+}
+
 export function SaveCorrect(arg1, arg2, arg3) {
   return window['go']['main']['App']['SaveCorrect'](arg1, arg2, arg3);
 }
 
 export function SaveError(arg1, arg2, arg3) {
   return window['go']['main']['App']['SaveError'](arg1, arg2, arg3);
+}
+
+export function SaveSettings(arg1) {
+  return window['go']['main']['App']['SaveSettings'](arg1);
 }
 
 export function UpdateCard(arg1, arg2) {

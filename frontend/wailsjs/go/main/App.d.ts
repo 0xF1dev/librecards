@@ -12,8 +12,12 @@ export function GetErrors(arg1:string):Promise<backend.CardErrors>;
 
 export function NewCard(arg1:backend.CardData):Promise<number>;
 
+export function ReadSettings():Promise<backend.Settings>;
+
 export function SaveCorrect(arg1:string,arg2:number,arg3:number):Promise<number>;
 
 export function SaveError(arg1:string,arg2:number,arg3:number):Promise<number>;
+
+export function SaveSettings(arg1:backend.Settings):Promise<number>;
 
 export function UpdateCard(arg1:string,arg2:backend.CardData):Promise<number>;

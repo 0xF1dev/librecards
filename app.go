@@ -21,6 +21,14 @@ func (a *App) startup(ctx context.Context) {
 	backend.StartupChecks()
 }
 
+func (a *App) ReadSettings() backend.Settings {
+	return backend.ReadSettings()
+}
+
+func (a *App) SaveSettings(settings backend.Settings) int {
+	return backend.SaveSettings(settings)
+}
+
 func (a *App) GetCards() backend.Index {
 	return backend.ReadIndex()
 }

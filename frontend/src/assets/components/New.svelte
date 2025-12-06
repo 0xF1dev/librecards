@@ -10,6 +10,8 @@
     import { NewCard, GetCard, UpdateCard } from "../../../wailsjs/go/main/App";
     import { onMount } from "svelte";
 
+    import { _ } from "svelte-i18n";
+
     let { onDone, edit = false, id = "" } = $props();
 
     let title = $state("");
@@ -82,14 +84,14 @@
         type="text"
         name=""
         id="title"
-        placeholder="Title"
+        placeholder={$_('new.title')}
         bind:value={title}
     />
     <input
         type="text"
         name=""
         id="subject"
-        placeholder="Subject"
+        placeholder={$_('new.subject')}
         bind:value={subject}
     />
     <div class="sections">
@@ -99,7 +101,7 @@
                     type="text"
                     name=""
                     id="section-title"
-                    placeholder="Section title ({i + 1})"
+                    placeholder={$_('new.section_title', { values: { n: i+1 } })}
                     bind:value={section.title}
                 />
                 <div class="questions">
@@ -110,7 +112,7 @@
                                     <textarea
                                         name=""
                                         id="question"
-                                        placeholder="Question"
+                                        placeholder={$_('new.question')}
                                         bind:value={question.question}
                                     ></textarea>
                                     {#if sections[i].questions.length - 1 !== 0}
@@ -131,7 +133,7 @@
                                     <textarea
                                         name=""
                                         id="answer"
-                                        placeholder="Answer"
+                                        placeholder={$_('new.answer')}
                                         bind:value={question.answer}
                                     ></textarea>
                                 </div>
@@ -160,7 +162,7 @@
             </div>
         {/each}
     </div>
-    <button class="add-section" onclick={addSection}>Add section</button>
+    <button class="add-section" onclick={addSection}>{$_('new.new_section')}</button>
     <button class="done icon-btn" id="done" onclick={createCard}
         ><img src={Done} alt="Done" /></button
     >

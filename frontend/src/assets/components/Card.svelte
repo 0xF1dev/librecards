@@ -1,6 +1,5 @@
 <script>
     // @ts-nocheck
-
     import ScrollLeft from "../images/scroll-left.png";
     import ScrollRight from "../images/scroll-right.png";
     import End from "../images/end.png";
@@ -16,6 +15,8 @@
     import { fly } from "svelte/transition";
 
     import SvelteMarkdown from "@humanspeak/svelte-markdown";
+
+    import { _ } from "svelte-i18n";
 
     let { id, withCorrection = false, onFinish } = $props();
 
@@ -289,17 +290,17 @@
             </div>
             <div class="buttons">
                 {#if showingAnswer === true}
-                    <button id="wrong" onclick={onWrong}>Wrong</button>
+                    <button id="wrong" onclick={onWrong}>{$_('card.wrong')}</button>
                 {/if}
                 <button id="reveal" onclick={showAnswer}
                     >{#if showingAnswer === true}
-                        Hide answer
+                        {$_('card.hide_answer')}
                     {:else}
-                        Show answer
+                        {$_('card.show_answer')}
                     {/if}</button
                 >
                 {#if showingAnswer === true}
-                    <button id="correct" onclick={onCorrect}>Correct</button>
+                    <button id="correct" onclick={onCorrect}>{$_('card.correct')}</button>
                 {/if}
             </div>
         </div>
@@ -315,7 +316,7 @@
     </div>
 </div>
 <div class="error" id="error">
-    <p class="error-msg">Error while loading card!</p>
+    <p class="error-msg">{$_('card.error')}</p>
 </div>
 
 <style>

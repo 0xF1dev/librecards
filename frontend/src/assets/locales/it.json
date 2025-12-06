@@ -1,0 +1,33 @@
+{
+    "loading": "Caricamento...",
+
+    "language": "Lingua:",
+
+    "home": {
+        "your_flashcards": "Le tue Flashcard ({count})",
+        "no_cards": "Nessuna flashcard",
+        "new_card": "Nuova Flashcard"
+    },
+
+    "card": {
+        "show_answer": "Mostra risposta",
+        "hide_answer": "Nascondi risposta",
+        "wrong": "Sbagliato",
+        "correct": "Giusto",
+        "error": "Errore durante il caricamento della flashcard!"
+    },
+
+    "end": {
+        "no_errs": "Nessun errore!",
+        "start_correction": "Avvia correzione"
+    },
+
+    "new": {
+        "title": "Titolo",
+        "subject": "Materia",
+        "section_title": "Titolo della sezione ({n})",
+        "question": "Domanda",
+        "answer": "Risposta",
+        "new_section": "Nuova sezione"
+    }
+}
