@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"slices"
+	"time"
 
 	"github.com/adrg/xdg"
 )
@@ -17,10 +18,11 @@ type Index struct {
 }
 
 type CardEntry struct {
-	ID      string `json:"id"`
-	Title   string `json:"title"`
-	Subject string `json:"subject"`
-	Path    string `json:"path"`
+	ID           string    `json:"id"`
+	CreationTime time.Time `json:"creation_time"`
+	Title        string    `json:"title"`
+	Subject      string    `json:"subject"`
+	Path         string    `json:"path"`
 }
 
 type CardData struct {
@@ -176,7 +178,9 @@ func ReadIndex() Index {
 		return Index{Count: 0, Cards: []CardEntry{ErrorCardEntry}}
 	}
 
-	slices.Reverse(index.Cards)
+	slices.SortFunc(index.Cards, func(a, b CardEntry) int {
+		return b.CreationTime.Compare(a.CreationTime)
+	})
 
 	log.Printf("Total entries: %d", index.Count)
 
@@ -227,7 +231,7 @@ func CreateNewCard(card CardData) int {
 		}
 	}
 
-	index.Cards = append(index.Cards, CardEntry{ID: id, Title: card.Title, Subject: card.Subject, Path: path})
+	index.Cards = append(index.Cards, CardEntry{ID: id, CreationTime: time.Now(), Title: card.Title, Subject: card.Subject, Path: path})
 	index.Count += 1
 
 	data, err := json.Marshal(Card{ID: id, Data: card})
@@ -489,6 +493,7 @@ func UpdateCard(id string, card CardData) int {
 
 	index.Cards[i].Title = card.Title
 	index.Cards[i].Subject = card.Subject
+	index.Cards[i].CreationTime = time.Now()
 
 	f, err := os.Create(index.Cards[i].Path)
 	if err != nil {
