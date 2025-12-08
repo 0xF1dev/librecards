@@ -219,10 +219,16 @@ func CreateNewCard(card CardData) int {
 	id := GenerateNewID()
 	path := DataPath + "/" + id + ".json"
 
+	for isRepeated := true; isRepeated; {
+		isRepeated = slices.ContainsFunc(index.Cards, func(entry CardEntry) bool { return entry.ID == id })
+		if isRepeated {
+			log.Printf("Found duplicate ID: %s\n", id)
+			id = GenerateNewID()
+		}
+	}
+
 	index.Cards = append(index.Cards, CardEntry{ID: id, Title: card.Title, Subject: card.Subject, Path: path})
 	index.Count += 1
-
-	log.Println(card)
 
 	data, err := json.Marshal(Card{ID: id, Data: card})
 	if err != nil {
