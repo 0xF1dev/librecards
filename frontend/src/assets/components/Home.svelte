@@ -3,7 +3,12 @@
     import { fade } from "svelte/transition";
 
     // @ts-ignore
-    import { GetCards, DeleteCard } from "../../../wailsjs/go/main/App";
+    import {
+        GetCards,
+        DeleteCard,
+        // @ts-ignore
+        ExportCards,
+    } from "../../../wailsjs/go/main/App";
 
     // @ts-ignore
     import ScrollLeft from "../images/scroll-left.png";
@@ -13,6 +18,12 @@
     import Delete from "../images/delete.png";
     // @ts-ignore
     import Edit from "../images/edit.png";
+
+    import Export from "../images/export.png";
+    import Done from "../images/done.png";
+
+    import Select from "../images/select.png";
+    import Deselect from "../images/deselect.png";
 
     import { _ } from "svelte-i18n";
 
@@ -29,6 +40,10 @@
     });
     let cardIndex = 0;
 
+    let exportingMode = $state(false);
+    let selectedExport = $state([]);
+    let cardIsSelected = $state(false);
+
     onMount(async () => {
         let index = await GetCards();
 
@@ -44,6 +59,11 @@
             cardIndex -= 1;
         }
         card = cards[cardIndex];
+        if (selectedExport.indexOf(card.id) != -1) {
+            cardIsSelected = true;
+        } else {
+            cardIsSelected = false;
+        }
     }
 
     async function scrollRight() {
@@ -53,6 +73,11 @@
             cardIndex += 1;
         }
         card = cards[cardIndex];
+        if (selectedExport.indexOf(card.id) != -1) {
+            cardIsSelected = true;
+        } else {
+            cardIsSelected = false;
+        }
     }
 
     function newFunc() {
@@ -82,6 +107,21 @@
     function edit() {
         onEdit(card.id);
     }
+
+    async function exportCards() {
+        exportingMode = !exportingMode;
+        if (exportingMode == true) {
+            selectedExport.push(card.id);
+            console.log(card.id);
+            cardIsSelected = true;
+        } else {
+            if (selectedExport.length != 0) {
+                await ExportCards(selectedExport, $_("dialogs.export"));
+            }
+            selectedExport = [];
+            cardIsSelected = false;
+        }
+    }
 </script>
 
 <div class="wrapper">
@@ -96,7 +136,7 @@
                 >
             {/if}
             {#if cards.length >= 1}
-                <div class="card">
+                <div class="card {cardIsSelected ? 'selected' : ''}">
                     <button
                         class="card-btn"
                         onclick={() => selectCard(card.id)}
@@ -148,14 +188,50 @@
                 <button
                     id="delete"
                     onclick={() => {
-                        deleteCard(card.id);
+                        if (exportingMode == true) {
+                            var index = selectedExport.indexOf(card.id);
+                            if (index !== -1) {
+                                selectedExport.splice(index, 1);
+                            }
+                            cardIsSelected = false;
+                        } else {
+                            deleteCard(card.id);
+                        }
                     }}
                     class="icon-btn"
                 >
-                    <img src={Delete} alt="" style="width: 20px" />
+                    <img
+                        src={exportingMode ? Deselect : Delete}
+                        alt=""
+                        style="width: 20px"
+                    />
                 </button>
-                <button id="edit" onclick={edit} class="icon-btn">
-                    <img src={Edit} alt="" style="width: 20px" />
+                <button
+                    id="edit"
+                    onclick={() => {
+                        if (exportingMode == true) {
+                            if (selectedExport.indexOf(card.id) == -1) {
+                                selectedExport.push(card.id);
+                                cardIsSelected = true;
+                            }
+                        } else {
+                            edit();
+                        }
+                    }}
+                    class="icon-btn"
+                >
+                    <img
+                        src={exportingMode ? Select : Edit}
+                        alt=""
+                        style="width: 20px"
+                    />
+                </button>
+                <button id="export" onclick={exportCards} class="icon-btn">
+                    <img
+                        src={exportingMode ? Done : Export}
+                        alt=""
+                        style="width: 20px"
+                    />
                 </button>
             </div>
         {/if}
@@ -233,6 +309,10 @@
         margin: 30px 30px;
     }
 
+    .selected {
+        background-color: #575757;
+    }
+
     #buttons {
         display: flex;
     }
@@ -252,12 +332,19 @@
 
     #edit {
         margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    #export {
+        margin-left: 10px;
     }
 
     .card-btn {
         width: 100%;
         height: 225px;
-    }:focus {
+        background-color: transparent;
+    }
+    :focus {
         outline: none;
     }
 

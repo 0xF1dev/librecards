@@ -2,8 +2,11 @@ package main
 
 import (
 	"context"
-	"github.com/0xF1dev/librecards/backend"
+	"fmt"
 	"log"
+	"time"
+
+	"github.com/0xF1dev/librecards/backend"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -83,4 +86,25 @@ func (a *App) DeleteCard(id string, dialog Dialog) int {
 
 func (a *App) UpdateCard(id string, card backend.CardData) int {
 	return backend.UpdateCard(id, card)
+}
+
+func (a *App) ExportCards(ids []string, dialogTitle string) int {
+	now := time.Now()
+	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		DefaultFilename: fmt.Sprintf("%d-%d-%d_%d:%d:%d.lcf", now.Day(), now.Month(), now.Year(), now.Hour(), now.Minute(), now.Second()),
+		Filters: []runtime.FileFilter{
+			{DisplayName: "Librecards Flashcard Collection (*.lcf)", Pattern: "*.lcf"},
+		},
+		Title: dialogTitle,
+	})
+	if err != nil {
+		log.Printf("[!] Error while showing export dialog: %s\n", err.Error())
+		return 1
+	}
+
+	if path == "" {
+		return 0
+	} else {
+		return backend.ExportCards(ids, path)
+	}
 }

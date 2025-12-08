@@ -6,6 +6,10 @@ export function DeleteCard(arg1, arg2) {
   return window['go']['main']['App']['DeleteCard'](arg1, arg2);
 }
 
+export function ExportCards(arg1, arg2) {
+  return window['go']['main']['App']['ExportCards'](arg1, arg2);
+}
+
 export function GetCard(arg1) {
   return window['go']['main']['App']['GetCard'](arg1);
 }

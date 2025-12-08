@@ -5,6 +5,8 @@ import {backend} from '../models';
 
 export function DeleteCard(arg1:string,arg2:main.Dialog):Promise<number>;
 
+export function ExportCards(arg1:Array<string>,arg2:string):Promise<number>;
+
 export function GetCard(arg1:string):Promise<backend.Card>;
 
 export function GetCards():Promise<backend.Index>;

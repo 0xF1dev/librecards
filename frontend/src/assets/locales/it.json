@@ -38,6 +38,7 @@
             "buttons": ["Sì", "No"],
             "default": "No",
             "cancel": "No"
-        }
+        },
+        "export": "Posizione dell'esportazione"
     }
 }

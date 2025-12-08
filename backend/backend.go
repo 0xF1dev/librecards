@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"archive/zip"
 	"cmp"
 	"encoding/json"
 	"log"
@@ -519,6 +520,56 @@ func UpdateCard(id string, card CardData) int {
 	}
 
 	log.Printf("--- Card updated! (#%s) ---\n", id)
+
+	return 0
+}
+
+func ExportCards(ids []string, path string) int {
+	log.Printf("--- Exporting cards in %s... ---\n", path)
+	log.Printf("Total: %d", len(ids))
+
+	file, err := os.Create(path)
+	if err != nil {
+		log.Printf("[!] Unable to create exported file: %s\n", err.Error())
+	}
+	defer file.Close()
+
+	w := zip.NewWriter(file)
+
+	version, err := w.Create("VERSION")
+	if err != nil {
+		log.Printf("[!] Unable to create version file: %s\n", err.Error())
+	}
+	_, err = version.Write([]byte("1"))
+	if err != nil {
+		log.Printf("[!] Unable to write version file: %s\n", err.Error())
+	}
+
+	exportedCard := []CardData{}
+	for _, id := range ids {
+		card := GetCard(id)
+		exportedCard = append(exportedCard, card.Data)
+	}
+
+	data, err := json.Marshal(exportedCard)
+	if err != nil {
+		log.Printf("[!] Unable to marshal cards: %s\n", err.Error())
+	}
+
+	cards, err := w.Create("cards.json")
+	if err != nil {
+		log.Printf("[!] Unable to create version file: %s\n", err.Error())
+	}
+	_, err = cards.Write(data)
+	if err != nil {
+		log.Printf("[!] Unable to write version file: %s\n", err.Error())
+	}
+
+	if err = w.Close(); err != nil {
+		log.Printf("[!] Error while closing exported file: %s\n", err.Error())
+	}
+
+	log.Println("--- Cards exported! ---")
 
 	return 0
 }

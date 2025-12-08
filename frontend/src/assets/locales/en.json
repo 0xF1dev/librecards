@@ -39,6 +39,7 @@
             "button_no": "No",
             "default": "No",
             "cancel": "No"
-        }
+        },
+        "export": "Export location"
     }
 }
