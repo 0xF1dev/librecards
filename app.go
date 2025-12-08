@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"librecards/backend"
+	"github.com/0xF1dev/librecards/backend"
 	"log"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
