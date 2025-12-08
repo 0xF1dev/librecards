@@ -280,7 +280,7 @@
                             }}
                             style="position: absolute;"
                         >
-                            <SvelteMarkdown source={text} />
+                            <SvelteMarkdown source={text} options={{ breaks: true }} />
                         </div>
                     {/key}
                 </div>
@@ -328,6 +328,10 @@
     * {
         color: white;
         font-family: Inter;
+    }
+
+    *:focus {
+        outline: 2px solid #535353;
     }
 
     button {

@@ -68,7 +68,7 @@
             if (error === 0) {
                 onDone();
             }
-            return
+            return;
         }
 
         // @ts-ignore
@@ -84,14 +84,14 @@
         type="text"
         name=""
         id="title"
-        placeholder={$_('new.title')}
+        placeholder={$_("new.title")}
         bind:value={title}
     />
     <input
         type="text"
         name=""
         id="subject"
-        placeholder={$_('new.subject')}
+        placeholder={$_("new.subject")}
         bind:value={subject}
     />
     <div class="sections">
@@ -101,7 +101,9 @@
                     type="text"
                     name=""
                     id="section-title"
-                    placeholder={$_('new.section_title', { values: { n: i+1 } })}
+                    placeholder={$_("new.section_title", {
+                        values: { n: i + 1 },
+                    })}
                     bind:value={section.title}
                 />
                 <div class="questions">
@@ -112,7 +114,7 @@
                                     <textarea
                                         name=""
                                         id="question"
-                                        placeholder={$_('new.question')}
+                                        placeholder={$_("new.question")}
                                         bind:value={question.question}
                                     ></textarea>
                                     {#if sections[i].questions.length - 1 !== 0}
@@ -133,7 +135,7 @@
                                     <textarea
                                         name=""
                                         id="answer"
-                                        placeholder={$_('new.answer')}
+                                        placeholder={$_("new.answer")}
                                         bind:value={question.answer}
                                     ></textarea>
                                 </div>
@@ -162,7 +164,9 @@
             </div>
         {/each}
     </div>
-    <button class="add-section" onclick={addSection}>{$_('new.new_section')}</button>
+    <button class="add-section" onclick={addSection}
+        >{$_("new.new_section")}</button
+    >
     <button class="done icon-btn" id="done" onclick={createCard}
         ><img src={Done} alt="Done" /></button
     >
@@ -180,6 +184,10 @@
     * {
         color: white;
         font-family: Inter;
+    }
+
+    *:focus {
+        outline: 2px solid #535353;
     }
 
     button {

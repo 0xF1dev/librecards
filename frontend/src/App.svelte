@@ -141,6 +141,10 @@
 {/if}
 
 <style>
+  *:focus {
+    outline: none;
+  }
+
   main {
     height: 100%;
     display: flex;
@@ -160,10 +164,6 @@
 
   option {
     text-align: center;
-  }
-
-  select:focus {
-    outline: none;
   }
 
   #logo {

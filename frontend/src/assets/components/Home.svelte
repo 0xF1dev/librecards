@@ -174,6 +174,10 @@
         font-family: Inter;
     }
 
+    *:focus {
+        outline: 2px solid #535353;
+    }
+
     button {
         border: none;
         border-radius: 50px;
@@ -253,6 +257,8 @@
     .card-btn {
         width: 100%;
         height: 225px;
+    }:focus {
+        outline: none;
     }
 
     .card-content {
