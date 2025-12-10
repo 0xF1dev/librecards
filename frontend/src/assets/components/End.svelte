@@ -144,16 +144,18 @@
                         ><img src={ScrollLeft} alt="Go back" /></button
                     >
                     <div class="card" id="card">
-                        <!-- position: absolute; fixes Svelte rendering two texts while outro is playing -->
-                        {#key text}
-                            <div
-                                in:fly|local={inAnimation}
-                                out:fly|local={outAnimation}
-                                style="position: absolute;"
-                            >
-                                <SvelteMarkdown source={text} />
-                            </div>
-                        {/key}
+                        <!-- grid display fixes Svelte rendering two texts while outro is playing -->
+                        <div style="display: grid;">
+                            {#key text}
+                                <div
+                                    in:fly|local={inAnimation}
+                                    out:fly|local={outAnimation}
+                                    style="grid-area: 1/1;"
+                                >
+                                    <SvelteMarkdown source={text} options={{ breaks: true }} />
+                                </div>
+                            {/key}
+                        </div>
                     </div>
                     <button class="scroll" id="next" onclick={scrollRight}
                         ><img src={ScrollRight} alt="Go forward" /></button

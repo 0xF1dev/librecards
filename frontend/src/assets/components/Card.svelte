@@ -265,24 +265,26 @@
                     ><img src={ScrollLeft} alt="Go back" /></button
                 >
                 <div class="card" id="card" class:correct class:wrong>
-                    <!-- position: absolute; fixes Svelte rendering two texts while outro is playing -->
-                    {#key text}
-                        <div
-                            in:fly|local={inAnimation}
-                            out:fly|local={outAnimation}
-                            onoutroend={() => {
-                                inAnimation = {
-                                    duration: 250,
-                                    x: 40,
-                                    delay: 250,
-                                };
-                                outAnimation = { duration: 250, x: -40 };
-                            }}
-                            style="position: absolute;"
-                        >
-                            <SvelteMarkdown source={text} options={{ breaks: true }} />
-                        </div>
-                    {/key}
+                    <!-- grid display fixes Svelte rendering two texts while outro is playing -->
+                    <div style="display: grid;">
+                        {#key text}
+                            <div
+                                in:fly|local={inAnimation}
+                                out:fly|local={outAnimation}
+                                onoutroend={() => {
+                                    inAnimation = {
+                                        duration: 250,
+                                        x: 40,
+                                        delay: 250,
+                                    };
+                                    outAnimation = { duration: 250, x: -40 };
+                                }}
+                                style="grid-area: 1/1;"
+                            >
+                                <SvelteMarkdown source={text} options={{ breaks: true }} />
+                            </div>
+                        {/key}
+                    </div>
                 </div>
                 <button class="scroll" id="next" onclick={scrollRight}
                     ><img src={scrollImage} alt="Go forward" /></button
@@ -388,6 +390,7 @@
     .card {
         min-width: 500px;
         min-height: 350px;
+        max-width: 600px;
         background-color: #373737;
         display: flex;
         flex-direction: column;
