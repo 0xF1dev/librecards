@@ -154,7 +154,7 @@
                                         delay: 200,
                                     }}
                                     out:fade|local={{ duration: 200 }}
-                                    style="position: absolute; transform: translateY(-120%);"
+                                    style="position: absolute; transform: translateY(-30px);"
                                 >
                                     {card.title}
                                 </p>
@@ -165,7 +165,7 @@
                                         delay: 200,
                                     }}
                                     out:fade|local={{ duration: 200 }}
-                                    style="position: absolute; transform: translateY(120%);"
+                                    style="position: absolute; transform: translateY(30px);"
                                 >
                                     {card.subject}
                                 </p>
