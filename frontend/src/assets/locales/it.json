@@ -39,6 +39,7 @@
             "default": "No",
             "cancel": "No"
         },
-        "export": "Posizione dell'esportazione"
+        "export": "Esporta collezione",
+        "import": "Importa collezione"
     }
 }

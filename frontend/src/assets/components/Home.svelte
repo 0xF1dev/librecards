@@ -8,6 +8,7 @@
         DeleteCard,
         // @ts-ignore
         ExportCards,
+        ImportCards,
     } from "../../../wailsjs/go/main/App";
 
     // @ts-ignore
@@ -20,14 +21,18 @@
     import Edit from "../images/edit.png";
 
     import Export from "../images/export.png";
+    import Import from "../images/import.png";
     import Done from "../images/done.png";
 
     import Select from "../images/select.png";
     import Deselect from "../images/deselect.png";
 
+    import SelectAll from "../images/select-all.png";
+    import DeselectAll from "../images/deselect-all.png";
+
     import { _ } from "svelte-i18n";
 
-    let { onNew, onSelect, onDelete, onEdit } = $props();
+    let { onNew, onClick, onDelete, onEdit, onImport } = $props();
 
     let cards = $state([]);
     let count = $state(0);
@@ -43,6 +48,7 @@
     let exportingMode = $state(false);
     let selectedExport = $state([]);
     let cardIsSelected = $state(false);
+    let selectAllImg = $state(SelectAll);
 
     onMount(async () => {
         let index = await GetCards();
@@ -84,8 +90,8 @@
         onNew();
     }
 
-    function selectCard(id) {
-        onSelect(id);
+    function clickCard(id) {
+        onClick(id);
     }
 
     async function deleteCard(id) {
@@ -122,6 +128,26 @@
             cardIsSelected = false;
         }
     }
+
+    async function importCards() {
+        if (exportingMode == true) {
+            if (selectedExport.length != cards.length) {
+                selectedExport = [];
+                cards.forEach((c) => {
+                    selectedExport.push(c.id);
+                });
+                cardIsSelected = true;
+                selectAllImg = DeselectAll;
+            } else {
+                selectedExport = [];
+                cardIsSelected = false;
+                selectAllImg = SelectAll;
+            }
+        } else {
+            await ImportCards($_("dialogs.import"));
+            onImport();
+        }
+    }
 </script>
 
 <div class="wrapper">
@@ -137,10 +163,7 @@
             {/if}
             {#if cards.length >= 1}
                 <div class="card {cardIsSelected ? 'selected' : ''}">
-                    <button
-                        class="card-btn"
-                        onclick={() => selectCard(card.id)}
-                    >
+                    <button class="card-btn" onclick={() => clickCard(card.id)}>
                         <!-- this inline styling fixes Svelte rendering two texts while outro is playing -->
                         <div
                             class="card-content"
@@ -193,6 +216,11 @@
                             if (index !== -1) {
                                 selectedExport.splice(index, 1);
                             }
+                            if (selectedExport.length != cards.length) {
+                                selectAllImg = SelectAll;
+                            } else {
+                                selectAllImg = DeselectAll;
+                            }
                             cardIsSelected = false;
                         } else {
                             deleteCard(card.id);
@@ -212,6 +240,11 @@
                         if (exportingMode == true) {
                             if (selectedExport.indexOf(card.id) == -1) {
                                 selectedExport.push(card.id);
+                                if (selectedExport.length != cards.length) {
+                                    selectAllImg = SelectAll;
+                                } else {
+                                    selectAllImg = DeselectAll;
+                                }
                                 cardIsSelected = true;
                             }
                         } else {
@@ -233,9 +266,26 @@
                         style="width: 20px"
                     />
                 </button>
+                <button id="import" onclick={importCards} class="icon-btn">
+                    <img
+                        src={exportingMode ? selectAllImg : Import}
+                        alt=""
+                        style="width: 20px"
+                    />
+                </button>
             </div>
         {/if}
         <button class="new" onclick={newFunc}>{$_("home.new_card")}</button>
+        {#if cards.length === 0}
+            <button
+                id="import"
+                onclick={importCards}
+                class="icon-btn"
+                style="margin-top: 20px;"
+            >
+                <img src={Import} alt="" style="width: 20px;" />
+            </button>
+        {/if}
     </div>
 </div>
 
@@ -330,12 +380,13 @@
         margin-right: 10px;
     }
 
-    #edit {
+    #edit,
+    #export {
         margin-left: 10px;
         margin-right: 10px;
     }
 
-    #export {
+    #import {
         margin-left: 10px;
     }
 

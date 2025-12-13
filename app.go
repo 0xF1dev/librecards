@@ -108,3 +108,22 @@ func (a *App) ExportCards(ids []string, dialogTitle string) int {
 		return backend.ExportCards(ids, path)
 	}
 }
+
+func (a *App) ImportCards(dialogTitle string) int {
+	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Filters: []runtime.FileFilter{
+			{DisplayName: "Librecards Flashcard Collection (*.lcf)", Pattern: "*.lcf"},
+		},
+		Title: dialogTitle,
+	})
+	if err != nil {
+		log.Printf("[!] Error while showing export dialog: %s\n", err.Error())
+		return 1
+	}
+
+	if path == "" {
+		return 0
+	} else {
+		return backend.ImportCards(path)
+	}
+}

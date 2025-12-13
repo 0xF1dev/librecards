@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"cmp"
 	"encoding/json"
+	"io"
 	"log"
 	"math/rand"
 	"os"
@@ -581,4 +582,69 @@ func ExportCards(ids []string, path string) int {
 	log.Println("--- Cards exported! ---")
 
 	return 0
+}
+
+func ImportCards(path string) int {
+	log.Printf("--- Importing cards in %s... ---\n", path)
+
+	r, err := zip.OpenReader(path)
+	if err != nil {
+		log.Printf("[!] Unable to open card archive: %s\n", err.Error())
+		return 1
+	}
+	defer r.Close()
+
+	versionFile, err := r.Open("VERSION")
+	if err != nil {
+		log.Printf("[!] Unable to open version file: %s\n", err.Error())
+		return 1
+	}
+	version, err := io.ReadAll(versionFile)
+	if err != nil {
+		log.Printf("[!] Unable to read version file: %s\n", err.Error())
+		return 1
+	}
+
+	cardsFile, err := r.Open("cards.json")
+	if err != nil {
+		log.Printf("[!] Unable to open cards file: %s\n", err.Error())
+		return 1
+	}
+	cardsBytes, err := io.ReadAll(cardsFile)
+	if err != nil {
+		log.Printf("[!] Unable to read cards file: %s\n", err.Error())
+		return 1
+	}
+	cards, e := convertCollectionToLatest(cardsBytes, string(version))
+	if e != 0 {
+		return e
+	}
+
+	slices.Reverse(cards)
+
+	for _, card := range cards {
+		CreateNewCard(card)
+	}
+
+	log.Println("--- Cards imported! ---")
+
+	return 0
+}
+
+func convertCollectionToLatest(cards []byte, version string) ([]CardData, int) {
+	var result []CardData
+	var err error
+
+	switch version {
+	case LatestCollectionVersion:
+		err = json.Unmarshal(cards, &result)
+	default:
+		log.Printf("[!] Unsupported LFC version: %s\n", version)
+	}
+
+	if err != nil {
+		return nil, 1
+	}
+
+	return result, 0
 }

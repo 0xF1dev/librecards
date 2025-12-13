@@ -22,6 +22,10 @@ export function GetErrors(arg1) {
   return window['go']['main']['App']['GetErrors'](arg1);
 }
 
+export function ImportCards(arg1) {
+  return window['go']['main']['App']['ImportCards'](arg1);
+}
+
 export function NewCard(arg1) {
   return window['go']['main']['App']['NewCard'](arg1);
 }

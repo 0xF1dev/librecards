@@ -13,6 +13,8 @@ export function GetCards():Promise<backend.Index>;
 
 export function GetErrors(arg1:string):Promise<backend.CardErrors>;
 
+export function ImportCards(arg1:string):Promise<number>;
+
 export function NewCard(arg1:backend.CardData):Promise<number>;
 
 export function ReadSettings():Promise<backend.Settings>;

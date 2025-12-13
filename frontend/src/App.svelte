@@ -72,7 +72,7 @@
     current = "correction";
   }
 
-  function del() {
+  function render() {
     rerender += 1;
   }
 
@@ -122,7 +122,12 @@
     <div id="content">
       {#if current === "home"}
         {#key rerender}
-          <Home onNew={newFn} onSelect={card} onDelete={del} onEdit={edit}
+          <Home
+            onNew={newFn}
+            onClick={card}
+            onDelete={render}
+            onEdit={edit}
+            onImport={render}
           ></Home>
         {/key}
       {:else if current === "new"}
