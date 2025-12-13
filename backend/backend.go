@@ -68,6 +68,8 @@ var IndexPath = xdg.DataHome + "/librecards/index.json"
 var ErrorsPath = xdg.DataHome + "/librecards/errors.json"
 var SettingsPath = xdg.DataHome + "/librecards/settings.json"
 
+var LatestCollectionVersion = "1"
+
 func StartupChecks() error {
 	log.Println("------- Starting checks... -------")
 
@@ -531,6 +533,7 @@ func ExportCards(ids []string, path string) int {
 	file, err := os.Create(path)
 	if err != nil {
 		log.Printf("[!] Unable to create exported file: %s\n", err.Error())
+		return 1
 	}
 	defer file.Close()
 
@@ -539,10 +542,12 @@ func ExportCards(ids []string, path string) int {
 	version, err := w.Create("VERSION")
 	if err != nil {
 		log.Printf("[!] Unable to create version file: %s\n", err.Error())
+		return 1
 	}
-	_, err = version.Write([]byte("1"))
+	_, err = version.Write([]byte(LatestCollectionVersion))
 	if err != nil {
 		log.Printf("[!] Unable to write version file: %s\n", err.Error())
+		return 1
 	}
 
 	exportedCard := []CardData{}
@@ -554,19 +559,23 @@ func ExportCards(ids []string, path string) int {
 	data, err := json.Marshal(exportedCard)
 	if err != nil {
 		log.Printf("[!] Unable to marshal cards: %s\n", err.Error())
+		return 1
 	}
 
 	cards, err := w.Create("cards.json")
 	if err != nil {
 		log.Printf("[!] Unable to create version file: %s\n", err.Error())
+		return 1
 	}
 	_, err = cards.Write(data)
 	if err != nil {
 		log.Printf("[!] Unable to write version file: %s\n", err.Error())
+		return 1
 	}
 
 	if err = w.Close(); err != nil {
 		log.Printf("[!] Error while closing exported file: %s\n", err.Error())
+		return 1
 	}
 
 	log.Println("--- Cards exported! ---")
