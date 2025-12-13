@@ -1,10 +1,8 @@
 <script>
-    // @ts-nocheck
     import ScrollLeft from "../images/scroll-left.png";
     import ScrollRight from "../images/scroll-right.png";
     import End from "../images/end.png";
 
-    // @ts-ignore
     import {
         GetCard,
         SaveError,

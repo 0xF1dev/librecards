@@ -1,7 +1,5 @@
 <script>
-  // @ts-ignore
   import logo from "./assets/images/logo.png";
-  // @ts-ignore
   import HomeImg from "./assets/images/home.png";
   import SettingsImg from "./assets/images/settings.png";
 
@@ -12,10 +10,9 @@
 
   import { register, init, isLoading, _, locale, locales } from "svelte-i18n";
   import { onMount } from "svelte";
-
-  // @ts-ignore
+  
   import { ReadSettings, SaveSettings } from "../wailsjs/go/main/App";
-    import { fly } from "svelte/transition";
+  import { fly } from "svelte/transition";
 
   register("en", () => import("./assets/locales/en.json"));
   register("it", () => import("./assets/locales/it.json"));

@@ -1,12 +1,8 @@
 <script>
-    // @ts-ignore
     import Add from "../images/add.png";
-    // @ts-ignore
     import Delete from "../images/delete.png";
-    // @ts-ignore
     import Done from "../images/done.png";
 
-    // @ts-ignore
     import { NewCard, GetCard, UpdateCard } from "../../../wailsjs/go/main/App";
     import { onMount } from "svelte";
 

@@ -1,11 +1,8 @@
 <script>
     import { onMount } from "svelte";
 
-    // @ts-ignore
     import { GetErrors, GetCard } from "../../../wailsjs/go/main/App";
-    // @ts-ignore
     import ScrollLeft from "../images/scroll-left.png";
-    // @ts-ignore
     import ScrollRight from "../images/scroll-right.png";
 
     import { fly } from "svelte/transition";

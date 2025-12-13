@@ -2,22 +2,16 @@
     import { onMount } from "svelte";
     import { fade } from "svelte/transition";
 
-    // @ts-ignore
     import {
         GetCards,
         DeleteCard,
-        // @ts-ignore
         ExportCards,
         ImportCards,
     } from "../../../wailsjs/go/main/App";
 
-    // @ts-ignore
     import ScrollLeft from "../images/scroll-left.png";
-    // @ts-ignore
     import ScrollRight from "../images/scroll-right.png";
-    // @ts-ignore
     import Delete from "../images/delete.png";
-    // @ts-ignore
     import Edit from "../images/edit.png";
 
     import Export from "../images/export.png";
