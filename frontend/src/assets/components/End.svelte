@@ -22,8 +22,8 @@
     let sectionTitle = $state("");
     let text = $state("");
 
-    let inAnimation = $state({ duration: 250, x: 40, delay: 250 });
-    let outAnimation = $state({ duration: 250, x: -40 });
+    let inAnimation = $state({ duration: 250, x: 40, y: 0, delay: 250 });
+    let outAnimation = $state({ duration: 250, x: -40, y: 0 });
 
     let hasErrors = $state(false);
 
@@ -71,8 +71,8 @@
     function scrollRight() {
         console.log(card);
 
-        inAnimation = { duration: 250, x: 40, delay: 250 };
-        outAnimation = { duration: 250, x: -40 };
+        inAnimation = { duration: 250, x: 40, y: 0, delay: 250 };
+        outAnimation = { duration: 250, x: -40, y: 0 };
 
         if (question >= card.data.sections[section].questions.length - 1) {
             if (section >= card.data.sections.length - 1) {
@@ -92,8 +92,8 @@
     function scrollLeft() {
         console.log(card);
 
-        inAnimation = { duration: 250, x: -40, delay: 250 };
-        outAnimation = { duration: 250, x: 40 };
+        inAnimation = { duration: 250, x: -40, y: 0, delay: 250 };
+        outAnimation = { duration: 250, x: 40, y: 0 };
 
         if (question == 0) {
             if (section <= 0) {

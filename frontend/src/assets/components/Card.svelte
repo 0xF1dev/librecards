@@ -36,8 +36,8 @@
     let wrong = $state(false);
     let lastStatus = "";
 
-    let inAnimation = $state({ duration: 250, x: 40, delay: 250 });
-    let outAnimation = $state({ duration: 250, x: -40 });
+    let inAnimation = $state({ duration: 250, x: 40, y: 0, y: 0, delay: 250 });
+    let outAnimation = $state({ duration: 250, x: -40, y: 0, y: 0 });
 
     let scrollImage = $state(ScrollRight);
 
@@ -99,8 +99,8 @@
 
     function showAnswer() {
         if (showingAnswer === false) {
-            inAnimation = { duration: 250, y: 20, delay: 250 };
-            outAnimation = { duration: 250, y: -20 };
+            inAnimation = { duration: 250, y: 20, x: 0, delay: 250 };
+            outAnimation = { duration: 250, y: -20, x: 0 };
 
             text = card.data.sections[section].questions[question].answer;
             showingAnswer = true;
@@ -108,8 +108,8 @@
                 lastStatus === "correct" ? (correct = true) : (wrong = true);
             }
         } else {
-            inAnimation = { duration: 250, y: 20, delay: 250 };
-            outAnimation = { duration: 250, y: -20 };
+            inAnimation = { duration: 250, y: 20, x: 0, delay: 250 };
+            outAnimation = { duration: 250, y: -20, x: 0 };
 
             text = card.data.sections[section].questions[question].question;
             showingAnswer = false;
@@ -163,8 +163,8 @@
     function scrollRight() {
         console.log(card);
 
-        inAnimation = { duration: 250, x: 40, delay: 250 };
-        outAnimation = { duration: 250, x: -40 };
+        inAnimation = { duration: 250, x: 40, y: 0, delay: 250 };
+        outAnimation = { duration: 250, x: -40, y: 0 };
 
         correct = false;
         wrong = false;
@@ -200,8 +200,8 @@
     function scrollLeft() {
         console.log(card);
 
-        inAnimation = { duration: 250, x: -40, delay: 250 };
-        outAnimation = { duration: 250, x: 40 };
+        inAnimation = { duration: 250, x: -40, y: 0, delay: 250 };
+        outAnimation = { duration: 250, x: 40, y: 0 };
 
         correct = false;
         wrong = false;
@@ -272,10 +272,10 @@
                                 onoutroend={() => {
                                     inAnimation = {
                                         duration: 250,
-                                        x: 40,
+                                        x: 40, y: 0,
                                         delay: 250,
                                     };
-                                    outAnimation = { duration: 250, x: -40 };
+                                    outAnimation = { duration: 250, x: -40, y: 0 };
                                 }}
                                 style="grid-area: 1/1; padding: 0 20px;"
                             >
